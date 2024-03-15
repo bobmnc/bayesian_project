@@ -26,22 +26,17 @@ def preprocess_review(review,stop_words):
     filtered_tokens = [token for token in tokens if token not in stop_words]
     return filtered_tokens
 
-def real_dataset():
-    dataset = load_dataset("ag_news",split='train')
-    
-    df = dataset.to_pandas()
-    dataset_test = load_dataset("ag_news",split='test')
-    df2 = dataset_test.to_pandas()
-    
-    df = pd.concat([df,df2])
-    
-    df = dataset.to_pandas()
-    
+def real_dataset(dataset_name : str = "ag_news"):
+    if dataset_name == "ag_news":
+        dataset = load_dataset(dataset_name,split='train')
+        df = dataset.to_pandas()
+    elif dataset_name == 'manu/project_gutenberg':
+        dataset = load_dataset(dataset_name,split='fr')
+        df = dataset.to_pandas()[:10] ## we only limit to the 10 first books as the dataset is big 
     
     
     # Preprocess the reviews
     nltk.download('punkt')
-    nltk.download('stopwords')
     nltk.download('stopwords')
     stop_words = set(stopwords.words('english'))
     
